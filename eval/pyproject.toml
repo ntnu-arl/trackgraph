@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+license = {text = "BSD-3-Clause"}
+name = "hydra_eval"
+version = "0.0.1"
+dependencies = [
+  "click",
+  "matplotlib",
+  "pandas",
+  "seaborn",
+  "tqdm",
+]
+
+[project.scripts]
+hydra-eval = "hydra_eval:__main__.cli"
+
+[tool.setuptools.packages.find]
+where = ["python"]
+namespaces = false
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore:::.*pkg_resources:",
+]

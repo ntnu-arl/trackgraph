@@ -1,0 +1,28 @@
+target_sources(
+  ${PROJECT_NAME}
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/graph_builder.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/graph_connector.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/gvd_place_extractor.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/frontier_extractor.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/mesh_delta_clustering.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/mesh_segmenter.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/place_mesh_connector.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/place_2d_segmenter.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/place_2d_split_logic.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph_longterm_reid.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/active_segment_reid.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph_segment_memory_stats.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph_segment_updater.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_association.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_config.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_evidence.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_features.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_logging.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_longterm.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_merging.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_metadata.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_objects.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/trackgraph/segment_support.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/view_database.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/view_selector.cpp
+)

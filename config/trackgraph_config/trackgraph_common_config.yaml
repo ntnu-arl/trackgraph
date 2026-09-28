@@ -1,0 +1,168 @@
+# Common TrackGraph tracked-reconstruction and graph-behavior configuration.
+---
+enable_cpu_timing: true
+# Headless TrackGraph runs save/export the internal frontend graph directly.
+# Avoid retaining and publishing a second ROS frontend mesh-delta history unless
+# an interactive launch explicitly opts back in.
+enable_frontend_output: false
+mesh:
+  with_track_data: false
+open_vocab_object_query:
+  result_mesh:
+    enabled: true
+  result_heatmap:
+    enabled: true
+  result_object_layer:
+    enabled: true
+    # Match layer 2 in visualizer_config_tracked.yaml: 5.5 m step * 2.0.
+    z_offset: 11.0
+active_window:
+  volumetric_map:
+    with_semantics: false
+    with_instances: true
+  tsdf:
+    type: TrackedProjectiveIntegrator
+    interpolation_method:
+      type: bilinear
+    propagation_source_scale: 0.25  # explicit: do not rely on the C++ default
+    propagation_confidence_threshold: 0.6
+frontend:
+  object_mode: tracked_objects
+  graph_sinks:
+    - type: TrackedObjectVisualizer
+      module_ns: "~/tracked_objects"
+      topic: "mesh_vertices"
+      layer_id: OBJECTS
+      point_scale: 0.12
+      point_alpha: 1.0
+      use_spheres: true
+      active_only: false
+      min_mesh_connections: 1
+      vertex_stride: 1
+      show_conflicts: true
+    - type: TrackedObjectMeshOverlayVisualizer
+      module_ns: "~/tracked_objects"
+      topic: "mesh_surface_overlay"
+      layer_id: OBJECTS
+      display_mode: owner
+      active_only: false
+      min_mesh_connections: 1
+      vertex_stride: 1
+      tracked_alpha: 1.0
+      raw_track_alpha: 1.0
+      ignored_alpha: 0.20
+      ignored_color_blend_weight: 0.85
+      unassigned_alpha: 0.25
+      unassigned_color: [90, 90, 90]
+      no_track_alpha: 0.12
+      no_track_color: [45, 45, 45]
+      archived_owner_alpha: 0.60
+      archived_owner_color: [70, 150, 240]
+      ignored_owner_color: [210, 80, 80]
+    - type: TrackedObjectMeshOverlayVisualizer
+      module_ns: "~/tracked_objects"
+      topic: "mesh_surface_overlay_owner_state"
+      layer_id: OBJECTS
+      display_mode: owner_state
+      active_only: false
+      min_mesh_connections: 1
+      vertex_stride: 1
+      tracked_alpha: 1.0
+      raw_track_alpha: 1.0
+      ignored_alpha: 0.20
+      ignored_color_blend_weight: 0.85
+      unassigned_alpha: 0.25
+      unassigned_color: [90, 90, 90]
+      no_track_alpha: 0.12
+      no_track_color: [45, 45, 45]
+      archived_owner_alpha: 0.60
+      archived_owner_color: [70, 150, 240]
+      ignored_owner_color: [210, 80, 80]
+    - type: TrackedObjectMeshOverlayVisualizer
+      module_ns: "~/tracked_objects"
+      topic: "mesh_surface_overlay_raw_track"
+      layer_id: OBJECTS
+      display_mode: raw_track
+      active_only: false
+      min_mesh_connections: 1
+      vertex_stride: 1
+      tracked_alpha: 1.0
+      raw_track_alpha: 1.0
+      ignored_alpha: 0.20
+      ignored_color_blend_weight: 0.85
+      unassigned_alpha: 0.25
+      unassigned_color: [90, 90, 90]
+      no_track_alpha: 0.12
+      no_track_color: [45, 45, 45]
+      archived_owner_alpha: 0.60
+      archived_owner_color: [70, 150, 240]
+      ignored_owner_color: [210, 80, 80]
+  tracked_objects:
+    layer_id: OBJECTS
+    min_points_create: 20
+    min_points_update: 5
+    depth_consistency_tol_m: 0.05
+    bounding_box_type: AABB
+    mark_missing_tracks_inactive: true
+    enable_owned_winner_support: winner_append
+    # Normal TrackGraph output follows Hydra's concise operational logging.
+    # Enable these individually when diagnosing tracked-object behavior.
+    log_config: false
+    log_timing: false
+    log_runtime: false
+    # Opt-in container cardinality snapshots: first update, every N updates, and final.
+    log_memory_stats: false
+    memory_stats_log_interval: 50
+    timer_namespace: frontend/tracked_objects
+    enable_active_window_adoption: true
+    open_vocab:
+      enabled: true
+      expected_encoder_id: openclip:ViT-H-14:laion2b_s32b_b79k:precision=fp16
+      max_cache_entries: 1024
+      verbosity: 0
+      ignore_filter:
+        enabled: false
+        source: service # Used only when the optional ignore filter is enabled.
+        prompts: ["a photo of a wall", "a photo of a floor", "floor tile", "a photo of a ceiling", "ceiling tile"]
+        ignore_score_threshold: 0.27
+        service_name: tracking/open_vocab/encode_text
+        prompt_bank_path: ""
+        verbosity: 0
+    reidentifier:
+      enabled: true
+      symmetric_overlap_threshold: 0.75
+      contained_overlap_threshold: 0.70
+      contained_reverse_overlap_max: 0.5
+      min_shared_vertices: 5
+      feature_similarity_reid_threshold: 0.80
+      feature_similarity_partof_low: 0.7
+      min_observation_frames: 3
+      candidate_age_window: 64
+      evaluate_on_keyframes_only: false
+      debug_decisions: false
+      max_debug_decisions_per_object: 20
+      log_decisions: false
+      log_summary: false
+    historical_associator:
+      enabled: true
+      num_candidates: 5
+      max_candidate_radius_m: 2.0
+      min_query_keyframes: 1
+      inactive_retry_window: 32
+      overlap_mode: nn_query_to_candidate
+      nn_search_radius_m: 0.10
+      overlap_weight: 0.5
+      feature_weight: 0.5
+      min_overlap_fraction: 0.42
+      min_feature_similarity: 0.7
+      min_joint_score: 0.65
+      debug_decisions: false
+      max_debug_decisions_per_object: 20
+      log_jobs: false
+      log_proposals: false
+      log_candidate_evaluations: false
+backend:
+  update_functors:
+    objects:
+      type: UpdateObjectsFunctor
+      allow_connection_merging: false
