@@ -2,6 +2,7 @@
 <div align="center">
   <a href="https://ntnu-arl.github.io/trackgraph-site/"><img src="https://img.shields.io/badge/Homepage-1E88E5?style=flat-square" alt="Homepage"></a>
   <a href="https://arxiv.org/abs/2609.31005"><img src="https://img.shields.io/badge/arXiv-78909C?style=flat-square" alt="arXiv"></a>
+  <a href="https://www.youtube.com/watch?v=cfQyDyOGiNU"><img src="https://img.shields.io/badge/YouTube-E57373?style=flat-square" alt="YouTube"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-BSD--3--Clause-green" alt="License: BSD-3-Clause"></a>
   <img src="https://img.shields.io/badge/ROS_2-Jazzy-blue" alt="ROS 2: Jazzy">
 </div>
